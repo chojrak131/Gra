@@ -1,0 +1,253 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
+public class PanelAnimacji extends JPanel implements MouseMotionListener {
+    private int x = 50;
+    private int y = 50;
+    private int radius = 20;
+    private int dx = 2;
+    private int dy = 2;
+    private Color ballcolor = Color.RED;
+    private Color rectColor = Color.BLUE;
+    public int paddleX = 150;
+
+    private final int paddleWidth = 100; // Szerokość belki
+    private final int paddleHeight = 20; // Wysokość belki
+
+    public PanelAnimacji() {
+        setBackground(Color.WHITE);
+        addMouseMotionListener(this);
+
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(ballcolor);
+        g.fillOval(x, y, 20, 20);
+
+
+        g.setColor(rectColor);
+        int paddleY = getHeight() - paddleHeight - 10; // Pozycja belki na osi Y (10 pikseli od dołu)
+        g.fillRect(paddleX, paddleY, paddleWidth, paddleHeight);
+    }
+
+    public void updatePosition() {
+        x += dx;
+        y += dy;
+// Obsługa kolizji z krawędziami panelu
+        if (x <= 0 || x + radius * 2 >= getWidth()) {
+            dx = -dx; // Zmień kierunek w poziomie
+        }
+        if (y <= 0) {
+            dy = -dy; // Zmień kierunek w pionie
+        }
+
+// Sprawdzenie kolizji piłki z belką
+        int paddleY = getHeight() - paddleHeight - 10; // Pozycja belki na osi Y
+        if (y + radius * 2 >= paddleY && y + radius * 2 <= paddleY + Math.abs(dy) // Kolizja od góry
+                && x + radius >= paddleX && x <= paddleX + paddleWidth)
+        {
+            dx++;
+            dy++;
+            dy = -dy;
+
+        }
+
+            }
+
+
+
+    public void startAnimation() {
+        Thread animationThread = new Thread(() -> {
+            while (true) {
+                updatePosition(); // Aktualizuj pozycję piłki
+                repaint();        // Odśwież ekran
+                try {
+                    Thread.sleep(20); // Opóźnienie dla płynności animacji
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        animationThread.start(); // Uruchomienie wątku animacji
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        paddleX = e.getX();
+        repaint();
+
+    }
+}
+
+
+
+
+
+
+
+
+
+Krok po kroku:
+
+    Importowanie klas:
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
+    Importujemy klasy potrzebne do tworzenia GUI i obsługi zdarzeń myszy:
+        JPanel i JFrame – do tworzenia komponentów graficznych,
+        Graphics – do rysowania na panelu,
+        MouseMotionListener – do obsługi ruchu myszy.
+
+Deklaracja klasy PanelAnimacji:
+
+public class PanelAnimacji extends JPanel implements MouseMotionListener {
+
+    Klasa PanelAnimacji rozszerza JPanel, co oznacza, że będzie to specjalny komponent graficzny.
+    Implementujemy interfejs MouseMotionListener, co umożliwia reagowanie na ruchy myszy.
+
+Zmienna i ich inicjalizacja:
+
+private int x = 50;
+private int y = 50;
+private int radius = 20;
+private int dx = 2;
+private int dy = 2;
+private Color ballcolor = Color.RED;
+private Color rectColor = Color.BLUE;
+public int paddleX = 150;
+
+private final int paddleWidth = 100; // Szerokość belki
+private final int paddleHeight = 20; // Wysokość belki
+
+    Inicjujemy zmienne, które będą odpowiadały za pozycję piłki (x, y), jej prędkość (dx, dy), kolor piłki (ballcolor), kolor belki (rectColor), oraz pozycję belki na osi X (paddleX).
+    Zmienna paddleWidth i paddleHeight określają wymiary belki.
+
+Konstruktor PanelAnimacji:
+
+public PanelAnimacji() {
+    setBackground(Color.WHITE);
+    addMouseMotionListener(this);
+}
+
+    W konstruktorze ustawiamy tło panelu na kolor biały (setBackground(Color.WHITE)).
+    Dodajemy nasłuchiwacz MouseMotionListener do panelu, dzięki czemu będziemy reagować na ruchy myszy.
+
+Metoda paintComponent(Graphics g):
+
+@Override
+protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    g.setColor(ballcolor);
+    g.fillOval(x, y, 20, 20);  // Rysowanie piłki
+    
+    g.setColor(rectColor);
+    int paddleY = getHeight() - paddleHeight - 10; // Pozycja belki na osi Y
+    g.fillRect(paddleX, paddleY, paddleWidth, paddleHeight);  // Rysowanie belki
+}
+
+    Metoda ta jest wywoływana, aby odświeżyć zawartość panelu. Za jej pomocą rysujemy piłkę i belkę na ekranie.
+
+Metoda updatePosition():
+
+public void updatePosition() {
+    x += dx;
+    y += dy;
+
+    // Obsługa kolizji z krawędziami panelu
+    if (x <= 0 || x + radius * 2 >= getWidth()) {
+        dx = -dx; // Zmień kierunek w poziomie
+    }
+    if (y <= 0) {
+        dy = -dy; // Zmień kierunek w pionie
+    }
+
+    // Sprawdzenie kolizji piłki z belką
+    int paddleY = getHeight() - paddleHeight - 10; // Pozycja belki na osi Y
+    if (y + radius * 2 >= paddleY && y + radius * 2 <= paddleY + Math.abs(dy) // Kolizja od góry
+            && x + radius >= paddleX && x <= paddleX + paddleWidth) {
+        dx++;
+        dy++;
+        dy = -dy; // Zmieniamy kierunek w pionie
+    }
+}
+
+    Zwiększamy pozycję piłki o jej prędkość (dx, dy).
+    Sprawdzamy kolizje z krawędziami panelu i zmieniamy kierunek piłki, gdy uderza w krawędź.
+    Sprawdzamy, czy piłka koliduje z belką i zmieniamy jej kierunek, jeśli tak się dzieje.
+
+Metoda startAnimation():
+
+public void startAnimation() {
+    Thread animationThread = new Thread(() -> {
+        while (true) {
+            updatePosition(); // Aktualizuj pozycję piłki
+            repaint();        // Odśwież ekran
+            try {
+                Thread.sleep(20); // Opóźnienie dla płynności animacji
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    animationThread.start(); // Uruchomienie wątku animacji
+}
+
+    Tworzymy nowy wątek do animacji piłki. W wątku tym w nieskończonej pętli aktualizujemy pozycję piłki i odświeżamy ekran co 20 milisekund.
+
+Obsługa zdarzeń myszy:
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        paddleX = e.getX();
+        repaint(); // Rysowanie belki w nowej pozycji
+    }
+
+        Metoda mouseMoved obsługuje ruch myszy, przesuwając belkę na osi X zgodnie z pozycją kursora.
+        mouseDragged jest pusta, ponieważ nie jest używana w tym przypadku.
+
+Checklist do stworzenia takiej aplikacji:
+
+    Importuj odpowiednie klasy:
+        JPanel, JFrame, Graphics i MouseMotionListener.
+
+    Stwórz klasę, która rozszerza JPanel:
+        Ta klasa będzie odpowiedzialna za rysowanie animacji i obsługę interakcji z użytkownikiem.
+
+    Zainicjalizuj zmienne:
+        Pozycja piłki, prędkość, kolor piłki, belki i inne potrzebne zmienne.
+
+    Stwórz konstruktor:
+        Ustaw tło panelu oraz dodaj nasłuchiwacz do obsługi zdarzeń myszy.
+
+    Zaimplementuj metodę paintComponent:
+        Rysowanie piłki i belki.
+
+    Zaimplementuj metodę updatePosition:
+        Aktualizowanie pozycji piłki, sprawdzanie kolizji.
+
+    Zaimplementuj metodę startAnimation:
+        Uruchomienie wątku animacji, który będzie aktualizować pozycję piłki.
+
+    Zaimplementuj metody obsługi myszy:
+        mouseMoved do przesuwania belki w zależności od ruchu myszy.
+
+    Stwórz aplikację główną (np. AnimacjaPilka):
+        Stwórz okno i dodaj panel, a także uruchom animację.
