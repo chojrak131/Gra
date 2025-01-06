@@ -1,0 +1,136 @@
+import javax.swing.*;
+
+public class AnimacjaPilka extends JFrame {
+        public static void main(String[] args) {
+            JFrame frame = new JFrame("Ruchoma Piłka");
+            PanelAnimacji panel = new PanelAnimacji();
+
+            frame.add(panel);
+            frame.setSize(400, 300);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+
+
+
+
+            panel.startAnimation(); // Rozpoczęcie animacji
+        }
+    }
+
+
+------------------------------------------------------------------------------------------------------------
+
+Omówienie klasy AnimacjaPilka
+
+import javax.swing.*;
+
+public class AnimacjaPilka extends JFrame {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Ruchoma Piłka");
+        PanelAnimacji panel = new PanelAnimacji();
+
+        frame.add(panel);
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
+        panel.startAnimation(); // Rozpoczęcie animacji
+    }
+}
+
+Krok po kroku:
+
+    Importowanie klas z pakietu javax.swing:
+
+import javax.swing.*;
+
+    javax.swing to pakiet w Javie, który zawiera klasy do tworzenia GUI (Graficznego Interfejsu Użytkownika). Używamy go, ponieważ chcemy stworzyć okno aplikacji oraz panel, na którym będziemy rysować animację.
+
+Deklaracja klasy AnimacjaPilka:
+
+public class AnimacjaPilka extends JFrame {
+
+    AnimacjaPilka to nasza główna klasa, która rozszerza (dziedziczy) klasę JFrame. JFrame to podstawowa klasa reprezentująca okno w aplikacji graficznej.
+    Dzięki temu nasza klasa AnimacjaPilka może stać się oknem aplikacji, w którym będziemy wyświetlać nasz panel.
+
+Metoda main:
+
+public static void main(String[] args) {
+
+    Jest to punkt wejścia do aplikacji. Metoda main jest wywoływana, gdy uruchamiamy program. W niej tworzymy całe okno oraz panel.
+
+Tworzenie okna (JFrame):
+
+JFrame frame = new JFrame("Ruchoma Piłka");
+
+    Tworzymy obiekt frame, który jest instancją klasy JFrame. Tytuł okna ustawiamy na "Ruchoma Piłka".
+    JFrame reprezentuje okno aplikacji, w którym pojawią się elementy interfejsu użytkownika, np. nasza animacja.
+
+Tworzenie panelu (PanelAnimacji):
+
+PanelAnimacji panel = new PanelAnimacji();
+
+    Tworzymy obiekt panel, który jest instancją klasy PanelAnimacji. To jest nasz panel, na którym będzie rysowana animacja piłki.
+    Klasa PanelAnimacji rozszerza JPanel, a więc jest komponentem graficznym, który może być dodany do okna JFrame.
+
+Dodawanie panelu do okna:
+
+frame.add(panel);
+
+    Dodajemy nasz panel do okna frame. Dzięki temu nasz panel (gdzie będzie rysowana animacja) pojawi się w oknie aplikacji.
+
+Ustawienie rozmiaru okna:
+
+frame.setSize(400, 300);
+
+    Ustawiamy wymiary okna na 400 pikseli szerokości i 300 pikseli wysokości. To będzie wymiary obszaru, w którym pojawi się nasza animacja.
+
+Zamknięcie aplikacji przy zamknięciu okna:
+
+frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    Określamy, że gdy użytkownik kliknie przycisk zamykania okna, aplikacja zostanie zamknięta. EXIT_ON_CLOSE oznacza, że aplikacja zakończy działanie, gdy okno zostanie zamknięte.
+
+Ustawienie widoczności okna:
+
+frame.setVisible(true);
+
+    Ustawiamy, aby okno było widoczne po uruchomieniu programu. Jeśli ta linia byłaby pominięta, okno aplikacji nie pojawiłoby się na ekranie.
+
+Uruchomienie animacji:
+
+    panel.startAnimation(); // Rozpoczęcie animacji
+
+        Wywołujemy metodę startAnimation() na obiekcie panel. Dzięki temu rozpocznie się animacja piłki, która jest zaimplementowana w klasie PanelAnimacji.
+        Ta metoda uruchamia animację w osobnym wątku, co pozwala na płynne poruszanie się piłki na ekranie.
+
+Checklist do stworzenia takiej aplikacji:
+
+    Importuj odpowiednie klasy:
+        Musisz zaimportować klasy z javax.swing do tworzenia okna (JFrame) oraz komponentów graficznych, jak np. JPanel.
+
+    Stwórz klasę główną aplikacji:
+        Klasa, która rozszerza JFrame, pozwala na stworzenie okna aplikacji.
+
+    Stwórz metodę main:
+        To punkt wejścia do programu, w którym tworzysz okno (JFrame) oraz dodajesz do niego komponenty (np. panel z animacją).
+
+    Tworzenie panelu animacji:
+        Stwórz klasę PanelAnimacji, która rozszerza JPanel i zawiera kod do rysowania animacji. Możesz w niej implementować metody rysujące oraz obsługujące animację.
+
+    Dodaj panel do okna:
+        Okno (JFrame) musi zawierać panel, na którym będą wyświetlane grafiki (np. piłka, belka).
+
+    Ustaw rozmiar okna:
+        Określ wielkość okna aplikacji za pomocą metody setSize().
+
+    Określ sposób zamknięcia aplikacji:
+        Za pomocą setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) zdefiniuj, co ma się stać, gdy użytkownik zamknie okno.
+
+    Ustaw widoczność okna:
+        Użyj setVisible(true), aby okno stało się widoczne po uruchomieniu programu.
+
+    Uruchom animację:
+        W metodzie main wywołaj metodę odpowiedzialną za uruchomienie animacji.
+
+Dzięki tym krokom stworzymy prostą aplikację graficzną, która wyświetli animację piłki w oknie.
